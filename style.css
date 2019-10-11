@@ -6,9 +6,11 @@ body {
 li{
 	margin: auto;
 	display: inline;
-	border-right: 3px inset #7B7B7B;
+	border-right: 0vw inset blue;
 	color: white;
-	padding-left: 10vw;
-	padding-right: 10vw;
+	padding-left: 5vw;
+	padding-right: 14vw;
 	background-color: #000009;
 }
+
+
