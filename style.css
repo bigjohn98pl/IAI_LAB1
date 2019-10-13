@@ -3,14 +3,27 @@ body {
 	font-size: 20px;
 	font-family: arial;
 }
-li{
-	margin: auto;
-	display: inline;
-	border-right: 0vw inset blue;
+.nav-link {
+	margin: 0px;
 	color: white;
-	padding-left: 5vw;
-	padding-right: 14vw;
-	background-color: #000009;
+	padding-left: 10vw;
+	padding-right: 10vw;
+	background-color: #4867BD;
+	transition: background-color 500ms;
+	transition: color 200ms;
+}
+.nav-link:hover {
+	margin: 0px;
+	color: black;
+	padding-left: 10vw;
+	padding-right: 10vw;
+	background-color: #354D91;
+}
+
+.nav{
+	margin-top:2vh;
+	margin-left: 4vw;
+	margin-right: 1vw;
 }
 
 
