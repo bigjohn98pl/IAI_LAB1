@@ -30,4 +30,8 @@ body {
     padding-bottom: 2vh;
 }
 
+footer{
+	bottom:0px;
+	text-align:center;
+}
 
