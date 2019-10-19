@@ -23,11 +23,12 @@ body {
 	margin-left: 4vw;
 	margin-right: 1vw;
 }
-.container{
-    margin-top:2vh;
-    width: 20vw;
-    border: solid black 1px;
-    padding-bottom: 2vh;
+.col-sm-3{
+    text-align: right;
+}
+
+i{
+    font-size:30px;
 }
 
 footer{
