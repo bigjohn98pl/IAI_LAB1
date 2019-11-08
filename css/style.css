@@ -7,16 +7,16 @@ body {
 .nav-link {
 	margin: 0px;
 	color: white;
-	padding-left: 10vw;
-	padding-right: 10vw;
+	padding-left: 1hr;
+	padding-right: 1hr;
 	background-color: #4867BD;
 	transition: all 500ms;
 }
 .nav-link:hover {
 	margin: 0px;
 	color: black;
-	padding-left: 10vw;
-	padding-right: 10vw;
+	padding-left: 1hr;
+	padding-right: 1hr;
 	background-color: #354D91;
 }
 

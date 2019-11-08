@@ -1,0 +1,149 @@
+body{
+    font-family:lato;
+    font-size: 30px;
+    display: flex;
+    color: white;
+    background-color: black;
+}
+img{
+    width: 50px;
+    height: 50px;
+}
+#panel_l{
+    display:flex;
+    width: 300px;
+    height: 500px;
+    border: 2px #A9A9A9 inset;
+}
+#box{
+    display: grid;
+    grid-template-columns:
+    grid-template-rows:
+    background-color: black;
+    width: 500px;
+    height: 500px;
+    margin:0px;
+    border: 2px #A9A9A9 inset;
+}
+#licznik{
+    padding: 20px;
+    left:400px;
+    top:0px;
+    z-index: 3;
+}
+.tile{
+    background-color: black;
+    display:grid;
+}
+
+#player{
+    background-image: url("Skake2.png");
+    background-size: 50px 50px;
+    transform: scale(1);
+
+}
+#player_l{
+    background-image: url("Skake2l.png");
+    background-size: 50px 50px;
+    //background-color: #262626;
+    transform: scale(1);
+    animation: move_left 350ms 1 alternate;
+}
+#player_r{
+    background-image: url("Skake2r.png");
+    background-size: 50px 50px;
+    //background-color: #262626;
+    transform: scale(1);
+    animation: move_right 350ms 1 alternate;
+}
+#player_u{
+    background-image: url("Skake2u.png");
+    background-size: 50px 50px;
+    //background-color: #262626;
+    transform: scale(1);
+    animation: move_up 350ms 1 alternate;
+}
+#player_d{
+    background-image: url("Skake2d.png");
+    background-size: 50px 50px;
+    //background-color: #262626;
+    transform: scale(1);
+    animation: move_down 350ms 1 alternate;
+}
+.player{
+    background-image: url("SnakeT.png");
+    background-size: 50px 50px;
+    background-color: #404040;
+    transform: scale(0.54,1);
+    transition: transform 350ms;
+    transition-timing-function: linear;
+
+}
+.player_2{
+    background-image: url("SnakeT2.png");
+    background-size: 50px 50px;
+    background-color: #404040;
+    transform: scale(1,0.54);
+    transition: transform 350ms;
+    transition-timing-function: linear;
+
+}
+@keyframes move_right
+{
+	from {transform: translate(-60px);}
+	to {transform: translate(0px);}
+}
+@keyframes move_left
+{
+	from {transform: translate(60px);}
+	to {transform: translate(0px);}
+}
+@keyframes move_up
+{
+	from {transform: translate(0px,60px);}
+	to {transform: translate(0px,0px);}
+}
+@keyframes move_down
+{
+	from {transform: translate(0px,-60px);}
+	to {transform: translate(0px,0px);}
+}
+@keyframes glow
+{
+	from {background-color: #003300;
+	        border: 3px #003300 inset}
+	to {background-color: #008000;
+	        border: 3px #009900 inset}
+}
+.apple{
+    background-color: #00cc00;
+    border-radius: 20px;
+    border: 3px #009900 inset;
+    transition: all 1s;
+
+    animation-name: glow;
+	animation-duration: 1500ms;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+#WIN{
+    display: flex;
+}
+#LOSE{
+    display: flex;
+}
+.buttons
+{
+	padding: 15px 5px 15px 5px;
+	margin: 15px 10px 20px 10px;
+	background-color: #444444;
+	color: #20e31a;
+	border: none;
+	border-radius: 5px;
+	box-shadow: 0px 5px #111111;
+}
+.buttons:active
+{
+	box-shadow: 0px 2px #111111;
+	transform: translateY(3px);
+}
