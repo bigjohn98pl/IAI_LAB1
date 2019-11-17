@@ -5,19 +5,37 @@ let next = document.querySelector('.next');
 let previous = document.querySelector('.previous');
 let question = document.querySelector('.question');
 let answers = document.querySelectorAll('.list-group-item');
+let list = document.querySelector(".list");
 
 let results = document.querySelector(".results");
 let average = document.querySelector(".average");
 let pointsElem = document.querySelector('.score');
 let restart = document.querySelector('.restart');
-let index = 18;
+let index = 0;
 let index_x = document.querySelector(".index");
 let points = 0;
 let points_storage = localStorage.getItem("points_storage");
 let points_array
 if(points_storage === undefined || points_storage === null ){points_storage = ""}
 else{points_array = points_storage.split(',').map(Number); points_array.pop();}
-let preQuestions =
+
+fetch('https://quiztai.herokuapp.com/api/quiz')
+    	.then(resp => resp.json())
+    	.then(resp => {
+        	   preQuestions = resp;
+
+        	   function start(){
+                   setQuestion(index);
+                   pointsElem.innerText = 0;
+                   document.querySelector(".index").innerHTML = "Nr "+(1+ index);
+                   for (let i = 0; i < answers.length; i++) {
+                       answers[i].addEventListener('click', doAction);
+                   }
+               }
+               start();
+             // kod wykorzystujący preQuestions
+
+/*let preQuestions =
     [
         {
             "category": "Entertainment: Music",
@@ -188,125 +206,129 @@ let preQuestions =
                 "Power Supply",
                 "Video Card"
             ]
-        }];
-console.log(points_storage);
-console.log(points_array);
-function setQuestion(index) {
-   //clearClass();
-   question.innerHTML = preQuestions[index].question;
+        }];*/
+    console.log(points_storage);
+    console.log(points_array);
+    function setQuestion(index) {
+       //clearClass();
+       question.innerHTML = preQuestions[index].question;
 
-   answers[0].innerHTML = preQuestions[index].answers[0];
-   answers[1].innerHTML = preQuestions[index].answers[1];
-   answers[2].innerHTML = preQuestions[index].answers[2];
-   answers[3].innerHTML = preQuestions[index].answers[3];
+       answers[0].innerHTML = preQuestions[index].answers[0];
+       answers[1].innerHTML = preQuestions[index].answers[1];
+       answers[2].innerHTML = preQuestions[index].answers[2];
+       answers[3].innerHTML = preQuestions[index].answers[3];
 
-   if (preQuestions[index].answers.length === 2) {
-          answers[2].style.display = 'none';
-          answers[3].style.display = 'none';
-      } else {
-          answers[2].style.display = 'block';
-          answers[3].style.display = 'block';
-      }
-index++;
-}
-
-next.addEventListener('click',function (){
-    if(index<preQuestions.length-1){
-        for (let i = 0; i < answers.length; i++) {
-            answers[i].addEventListener('click', doAction);
-        }
-        index++;
-        setQuestion(index);
-        index_x.innerHTML = "Nr "+(1+ index);
-        removeclass();
+       if (preQuestions[index].answers.length === 2) {
+              answers[2].style.display = 'none';
+              answers[3].style.display = 'none';
+          } else {
+              answers[2].style.display = 'block';
+              answers[3].style.display = 'block';
+          }
+    index++;
     }
-    else if(index===preQuestions.length-1){
-        localStorage.setItem("points_storage", points_storage + "" + points + ",");
-        console.log('saved!');
-        results.style.display = "inline";
+
+    next.addEventListener('click',function (){
+        if(index<preQuestions.length-1){
+            for (let i = 0; i < answers.length; i++) {
+                answers[i].addEventListener('click', doAction);
+            }
+            index++;
+            setQuestion(index);
+            index_x.innerHTML = "Nr "+(1+ index);
+            removeclass();
+        }
+        else if(index===preQuestions.length-1){
+            localStorage.setItem("points_storage", points_storage + "" + points + ",");
+            points_storage = localStorage.getItem("points_storage");
+            points_array = points_storage.split(',').map(Number); points_array.pop();
+            console.log('saved!');
+            results.style.display = "block";
+            list.style.display = "none";
+            let userScorePoint = document.querySelector('.userScorePoint');
+            userScorePoint.innerHTML = points+"/20";
+            average.innerHTML = srednia(points_array);
+        }
+        else{
+            console.log("index to hight");
+        }
+    });
+    previous.addEventListener('click', function(){
+        if(index > 0){
+            for (let i = 0; i < answers.length; i++) {
+                answers[i].addEventListener('click', doAction);
+            }
+            index--;
+            index_x.innerHTML = "Nr "+(1+ index);
+            setQuestion(index);
+        }
+        else{
+            console.log("index to low");
+        }
+        removeclass();
+    })
+
+    function doAction(event) {
+        //event.target - Zwraca referencję do elementu, do którego zdarzenie zostało pierwotnie wysłane.
+        if (event.target.innerHTML === preQuestions[index].correct_answer) {
+            points++;
+            pointsElem.innerText = points;
+            markCorrect(event.target);
+        }
+        else {
+            markInCorrect(event.target);
+        }
+        disableAnswers();
+    }
+    function disableAnswers(){
+        for (let i = 0; i < answers.length; i++) {
+            answers[i].removeEventListener('click', doAction);
+        }
+    }
+    function markCorrect(elem) {
+       elem.classList.add('correct');
+       elem.classList.remove('incorrect');
+    }
+    function markInCorrect(elem) {
+       elem.classList.remove('correct');
+       elem.classList.add('incorrect');
+    }
+    function removeclass(){
+        for (let i = 0; i < answers.length; i++) {
+                    answers[i].classList.remove("correct","incorrect");
+                }
+    }
+
+    restart.addEventListener('click', function (event) {
+        event.preventDefault();
+        points_storage = localStorage.getItem("points_storage");
+        if(points_storage === undefined || points_storage === null ){points_storage = ""}
+        else{points_array = points_storage.split(',').map(Number); points_array.pop();}
+        index = 0;
+        index_x.innerHTML = index;
+        points = 0;
         let userScorePoint = document.querySelector('.userScorePoint');
         userScorePoint.innerHTML = points;
-        average.innerHTML = srednia(points_array);
-    }
-    else{
-        console.log("index to hight");
-    }
-});
-previous.addEventListener('click', function(){
-    if(index > 0){
-        for (let i = 0; i < answers.length; i++) {
-            answers[i].addEventListener('click', doAction);
-        }
-        index--;
-        index_x.innerHTML = "Nr "+(1+ index);
+        removeclass();
+        start();
         setQuestion(index);
-    }
-    else{
-        console.log("index to low");
-    }
-    removeclass();
-})
+        //activateAnswers();
+        list.style.display = 'block';
+        results.style.display = 'none';
+    });
 
-function doAction(event) {
-    //event.target - Zwraca referencję do elementu, do którego zdarzenie zostało pierwotnie wysłane.
-    if (event.target.innerHTML === preQuestions[index].correct_answer) {
-        points++;
-        pointsElem.innerText = points;
-        markCorrect(event.target);
-    }
-    else {
-        markInCorrect(event.target);
-    }
-    disableAnswers();
-}
-function disableAnswers(){
-    for (let i = 0; i < answers.length; i++) {
-        answers[i].removeEventListener('click', doAction);
-    }
-}
-function markCorrect(elem) {
-   elem.classList.add('correct');
-   elem.classList.remove('incorrect');
-}
-function markInCorrect(elem) {
-   elem.classList.remove('correct');
-   elem.classList.add('incorrect');
-}
-function removeclass(){
-    for (let i = 0; i < answers.length; i++) {
-                answers[i].classList.remove("correct","incorrect");
+    function srednia(array){
+        let sum = 0;
+        if(array === undefined){
+            array = [];
+            array.push(0);
+        }
+        else{
+            for(i=0;i<array.length;i++){
+                sum = sum + array[i];
             }
-}
+        }
+        return Math.round((sum/array.length)*100)/100;
+    }
 
-restart.addEventListener('click', function (event) {
-    event.preventDefault();
-    points_storage = localStorage.getItem("points_storage");
-    if(points_storage === undefined || points_storage === null ){points_storage = ""}
-    else{points_array = points_storage.split(',').map(Number); points_array.pop();}
-    index = 0;
-    index_x.innerHTML = index;
-    points = 0;
-    let userScorePoint = document.querySelector('.userScorePoint');
-    userScorePoint.innerHTML = points;
-    average.innerHTML = srednia(points_array);
-    setQuestion(index);
-    //activateAnswers();
-    //list.style.display = 'block';
-    results.style.display = 'none';
 });
-
-function srednia(array){
-    let sum = 0;
-    for(i=0;i<array.length;i++){
-        sum = sum + array[i];
-    }
-    return Math.floor(sum/array.length);
-}
-
-window.onload = function(){
-    setQuestion(index);
-    document.querySelector(".index").innerHTML = "Nr "+(1+ index);
-    for (let i = 0; i < answers.length; i++) {
-        answers[i].addEventListener('click', doAction);
-    }
-}
